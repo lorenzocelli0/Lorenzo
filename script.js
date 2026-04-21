@@ -35,21 +35,21 @@ const standings2026 = [
 ];
 
 const footballFallbacks = [
-    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop', // Estádio
-    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop', // Chuteira
-    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop', // Lance de jogo
-    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop', // Torcida
-    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop', // Placar
-    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop', // Luva goleiro
-    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop', // Bandeira
-    'https://images.unsplash.com/photo-1624891151634-1c5d5a230193?q=80&w=800&auto=format&fit=crop', // Jogador em campo
-    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop', // Bola no gol
-    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop'  // Rede balançando
+    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1511886929837-399a8a11bcac?q=80&w=800&auto=format&fit=crop'
 ];
 
 function handleImgError(img) {
-    const idx = Math.floor(Math.random() * fallbacks.length);
-    img.src = fallbacks[idx];
+    const idx = Math.floor(Math.random() * footballFallbacks.length);
+    img.src = footballFallbacks[idx];
     img.onerror = null;
 }
 
@@ -57,7 +57,38 @@ function extractImage(item) {
     if (item.thumbnail && item.thumbnail !== '') return item.thumbnail;
     const content = item.content || item.description || '';
     const match = content.match(/<img[^>]+src="([^">]+)"/);
-    return match ? match[1] : fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    return match ? match[1] : footballFallbacks[Math.floor(Math.random() * footballFallbacks.length)];
+}
+
+// BUSCA AO VIVO (API REAL)
+async function fetchLiveScores() {
+    const container = document.getElementById('live-container');
+    if (!container) return;
+
+    try {
+        const response = await fetch('https://www.thesportsdb.com/api/v1/json/3/livescore.php');
+        const data = await response.json();
+        
+        if (data.events && data.table) {
+            container.innerHTML = data.events.map(event => `
+                <div class="live-card">
+                    <div class="live-badge">LIVE</div>
+                    <div class="live-teams-row">
+                        <span>${event.strHomeTeam}</span>
+                        <span class="live-score-val">${event.intHomeScore}</span>
+                    </div>
+                    <div class="live-teams-row">
+                        <span>${event.strAwayTeam}</span>
+                        <span class="live-score-val">${event.intAwayScore}</span>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<span class="no-live">Nenhum jogo ao vivo no momento</span>';
+        }
+    } catch (e) {
+        container.innerHTML = '<span class="no-live">Nenhum jogo ao vivo no momento</span>';
+    }
 }
 
 async function fetchNews(category = 'inicio') {
@@ -106,7 +137,6 @@ function renderNews(news) {
         </article>
     `).join('');
     
-    // Atualizar Hero (Somente no Início)
     const items = document.querySelectorAll('.hero-item');
     news.slice(0, 3).forEach((n, i) => {
         if (items[i]) {
@@ -161,7 +191,9 @@ function renderMatches() {
 document.addEventListener('DOMContentLoaded', () => {
     renderStandings();
     renderMatches();
+    fetchLiveScores();
     fetchNews('inicio');
+    setInterval(fetchLiveScores, 60000); // Atualiza ao vivo a cada minuto
 
     document.querySelectorAll('[data-tab]').forEach(link => {
         link.addEventListener('click', (e) => {

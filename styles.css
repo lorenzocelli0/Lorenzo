@@ -24,6 +24,20 @@ body { font-family: 'Inter', sans-serif; background: var(--fn-bg); color: var(--
 .nav-link { color: var(--fn-text); text-decoration: none; font-size: 13px; font-weight: 700; opacity: 0.7; transition: 0.3s; text-transform: uppercase; white-space: nowrap; }
 .nav-link:hover, .nav-link.active { opacity: 1; color: var(--fn-blue-primary); }
 
+/* Seção Ao Vivo */
+.live-section { background: #fff; padding: 15px 0; border-bottom: 1px solid var(--fn-border); margin-bottom: 0; }
+.live-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+.live-scroll::-webkit-scrollbar { display: none; }
+.live-card { background: #f8f9fa; border: 1px solid var(--fn-border); padding: 10px 15px; border-radius: 8px; min-width: 220px; flex-shrink: 0; cursor: pointer; transition: 0.2s; position: relative; }
+.live-card:hover { border-color: var(--fn-blue-primary); background: #fff; }
+.live-badge { color: #ff4d4d; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+.live-badge::before { content: ''; width: 6px; height: 6px; background: #ff4d4d; border-radius: 50%; animation: pulse 1.5s infinite; }
+.live-teams-row { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px; }
+.live-score-val { color: var(--fn-blue-primary); font-weight: 900; font-size: 14px; }
+.no-live { color: #999; font-size: 13px; font-weight: 600; padding: 5px; }
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
 /* Layout Principal */
 .container { max-width: 1240px; margin: 30px auto; padding: 0 20px; }
 .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 30px; }
