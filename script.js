@@ -35,25 +35,25 @@ const fullStandings2026 = [
     { pos: 20, team: 'Chapecoense', pts: 8, pj: 11, v: 1, e: 5, d: 5, sg: -11 }
 ];
 
-// Banco de imagens de reserva ampliado e temático
 const footballFallbacks = [
-    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop', // Estádio
-    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop', // Chuteira/Bola
-    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop', // Jogo
-    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop', // Torcida
-    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop', // Placar
-    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop', // Gramado
-    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop', // Luva Goleiro
-    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop', // Bandeira Escanteio
-    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop', // Rede Gol
-    'https://images.unsplash.com/photo-1511886929837-399a8a11bcac?q=80&w=800&auto=format&fit=crop'  // Treino
+    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1511886929837-399a8a11bcac?q=80&w=800&auto=format&fit=crop'
 ];
 
-// Função global para lidar com erro de imagem e trocar por uma aleatória
+let currentCategory = 'inicio';
+
 function handleImgError(img) {
     const randomIdx = Math.floor(Math.random() * footballFallbacks.length);
     img.src = footballFallbacks[randomIdx];
-    img.onerror = null; // Evita loop infinito
+    img.onerror = null;
 }
 
 function getSmartFallback(title) {
@@ -66,16 +66,10 @@ function getSmartFallback(title) {
 }
 
 function extractImage(item) {
-    // Se já tiver thumbnail e não for uma imagem quebrada conhecida
     if (item.thumbnail && item.thumbnail !== '' && !item.thumbnail.includes('ge_placeholder')) return item.thumbnail;
-    
-    // Tenta achar no conteúdo HTML
     const content = item.content || item.description || '';
     const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
-    if (imgMatch && imgMatch[1]) return imgMatch[1];
-    
-    // Fallback inteligente
-    return getSmartFallback(item.title);
+    return (imgMatch && imgMatch[1]) ? imgMatch[1] : getSmartFallback(item.title);
 }
 
 async function fetchNews(category = 'inicio') {
@@ -86,7 +80,7 @@ async function fetchNews(category = 'inicio') {
     const titles = { 'inicio': 'NOTÍCIAS EM TEMPO REAL', 'brasileirao': 'BRASILEIRÃO 2026', 'copa-do-brasil': 'COPA DO BRASIL', 'mercado': 'MERCADO DA BOLA', 'selecao': 'SELEÇÃO BRASILEIRA' };
     if (label) label.textContent = titles[category];
 
-    container.innerHTML = '<div class="loading">Sintonizando informações...</div>';
+    container.innerHTML = '<div class="loading">Sincronizando últimas do futebol...</div>';
     let allNews = [];
     const feeds = CATEGORY_FEEDS[category] || CATEGORY_FEEDS['inicio'];
 
@@ -125,7 +119,9 @@ function renderNews(news) {
             </div>
         </article>
     `).join('');
-    if (currentCategory === 'inicio') updateHero(news.slice(0, 3));
+    
+    // ATUALIZAÇÃO CRÍTICA DO HERO
+    updateHero(news.slice(0, 3));
 }
 
 function updateHero(news) {
@@ -135,9 +131,10 @@ function updateHero(news) {
             const img = items[i].querySelector('img');
             img.src = n.thumbnail;
             img.onerror = () => handleImgError(img);
-            const title = items[i].querySelector('h1') || items[i].querySelector('h2');
-            if (title) title.textContent = n.title;
-            items[i].querySelector('.badge').textContent = n.category;
+            const titleElement = items[i].querySelector('h1') || items[i].querySelector('h2');
+            if (titleElement) titleElement.textContent = n.title;
+            const badge = items[i].querySelector('.badge');
+            if (badge) badge.textContent = n.category;
             items[i].onclick = () => window.open(n.link, '_blank');
         }
     });
