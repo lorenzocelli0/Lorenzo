@@ -5,32 +5,42 @@ const RSS_FEEDS = [
     { name: 'Gazeta Esportiva', url: 'https://www.gazetaesportiva.com/feed/' }
 ];
 
-// Dados do Brasileirão 2026 (Simulados conforme o seu projeto)
+// Tabela OFICIAL Brasileirão 2026 (Conforme sua imagem)
 const standings2026 = [
-    { pos: 1, team: 'Flamengo', points: 28 },
-    { pos: 2, team: 'Palmeiras', points: 26 },
-    { pos: 3, team: 'Botafogo', points: 24 },
-    { pos: 4, team: 'São Paulo', points: 22 },
-    { pos: 5, team: 'Bahia', points: 21 },
-    { pos: 6, team: 'Cruzeiro', points: 20 },
-    { pos: 7, team: 'Athletico-PR', points: 19 },
-    { pos: 8, team: 'RB Bragantino', points: 18 }
+    { pos: 1, team: 'Palmeiras', points: 29 },
+    { pos: 2, team: 'Flamengo', points: 23 },
+    { pos: 3, team: 'Fluminense', points: 23 },
+    { pos: 4, team: 'São Paulo', points: 20 },
+    { pos: 5, team: 'Bahia', points: 20 },
+    { pos: 6, team: 'Athletico-PR', points: 19 },
+    { pos: 7, team: 'Coritiba', points: 19 },
+    { pos: 8, team: 'Bragantino', points: 17 }
 ];
 
-// Jogos de Hoje (Copa do Brasil 2026)
+// Jogos de Hoje (Simulados 2026)
 const todayMatches = [
     { competition: 'COPA DO BRASIL', time: '19:30', home: 'Grêmio', away: 'Confiança' },
     { competition: 'COPA DO BRASIL', time: '21:30', home: 'Barra', away: 'Corinthians' },
     { competition: 'COPA DO BRASIL', time: '21:30', home: 'Paysandu', away: 'Vasco' }
 ];
 
-// --- Lógica de Notícias ---
-function extractImage(item) {
-    if (item.thumbnail) return item.thumbnail;
+// Banco de imagens de reserva (Caso a notícia venha sem foto)
+const fallbacks = [
+    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1000&auto=format&fit=crop'
+];
+
+function extractImage(item, index) {
+    if (item.thumbnail && item.thumbnail !== '') return item.thumbnail;
+    if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+    
     const content = item.content || item.description || '';
     const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
     if (imgMatch && imgMatch[1]) return imgMatch[1];
-    return `https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop`; 
+    
+    // Se não achar nada, usa uma do banco de reserva rotativo
+    return fallbacks[index % fallbacks.length];
 }
 
 async function fetchNews() {
@@ -42,13 +52,13 @@ async function fetchNews() {
             const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&t=${Date.now()}`);
             const data = await response.json();
             if (data.status === 'ok' && data.items) {
-                const newsItems = data.items.map(item => ({
+                const newsItems = data.items.map((item, idx) => ({
                     title: item.title,
                     link: item.link,
-                    thumbnail: extractImage(item),
+                    thumbnail: extractImage(item, idx),
                     category: feed.name,
                     pubDate: new Date(item.pubDate),
-                    desc: item.description.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...'
+                    desc: item.description.replace(/<[^>]*>?/gm, '').substring(0, 90) + '...'
                 }));
                 allNews = [...allNews, ...newsItems];
             }
@@ -64,12 +74,12 @@ function renderNews(news) {
     const container = document.getElementById('news-container');
     container.innerHTML = news.map(item => `
         <article class="feed-card" onclick="window.open('${item.link}', '_blank')">
-            <div class="card-img"><img src="${item.thumbnail}" loading="lazy"></div>
+            <div class="card-img"><img src="${item.thumbnail}" onerror="this.src='${fallbacks[0]}'"></div>
             <div class="card-info">
                 <span class="tag">${item.category}</span>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
-                <span class="time">Publicado hoje às ${item.pubDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                <span class="time">Hoje às ${item.pubDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
         </article>
     `).join('');
@@ -80,7 +90,9 @@ function updateHero(news) {
     const items = document.querySelectorAll('.hero-item');
     news.forEach((n, i) => {
         if (items[i]) {
-            items[i].querySelector('img').src = n.thumbnail;
+            const img = items[i].querySelector('img');
+            img.src = n.thumbnail;
+            img.onerror = () => { img.src = fallbacks[i]; };
             const title = items[i].querySelector('h1') || items[i].querySelector('h2');
             if (title) title.textContent = n.title;
             items[i].querySelector('.badge').textContent = n.category;
@@ -89,7 +101,6 @@ function updateHero(news) {
     });
 }
 
-// --- Lógica de Tabela e Jogos ---
 function renderStandings() {
     const body = document.getElementById('standingsBody');
     if (body) {
