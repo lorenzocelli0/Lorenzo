@@ -9,132 +9,98 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header FutNews -->
-    <header class="fn-header">
+    <header class="header">
         <div class="header-container">
-            <div class="logo-area">
+            <a href="#" class="logo-area" data-tab="inicio">
                 <span>f</span>
                 <div class="logo-u-container">
-                    <span class="logo-ball"><i class="fas fa-volleyball-ball"></i></span>
+                    <span class="logo-ball"><i class="fas fa-futbol"></i></span>
                     <span>u</span>
                 </div>
                 <span>tnews</span>
-            </div>
-            <nav class="fn-nav">
-                <a href="#" class="nav-link active" data-category="inicio">INÍCIO</a>
-                <a href="#" class="nav-link" data-category="brasileirao">BRASILEIRÃO</a>
-                <a href="#" class="nav-link" data-category="copa-do-brasil">COPA DO BRASIL</a>
-                <a href="#" class="nav-link" data-category="mercado">MERCADO</a>
-                <a href="#" class="nav-link" data-category="selecao">SELEÇÃO</a>
+            </a>
+            <nav class="nav">
+                <a href="#" class="nav-link active" data-tab="inicio">INÍCIO</a>
+                <a href="#" class="nav-link" data-tab="brasileirao">BRASILEIRÃO</a>
+                <a href="#" class="nav-link" data-tab="copa-do-brasil">COPA DO BRASIL</a>
+                <a href="#" class="nav-link" data-tab="mercado">MERCADO</a>
+                <a href="#" class="nav-link" data-tab="selecao">SELEÇÃO</a>
             </nav>
-            <div class="user-area">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                </div>
-                <button class="btn-login">ENTRAR</button>
-            </div>
         </div>
     </header>
 
-    <main class="fn-container">
+    <main class="container">
         <!-- Hero Section Dinâmico -->
-        <section class="fn-hero-section">
-            <div class="hero-item main-news">
-                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200" alt="Destaque Principal">
-                <div class="hero-content">
-                    <span class="badge">FUTNEWS</span>
-                    <h1>Buscando as notícias mais quentes...</h1>
+        <section class="hero-grid">
+            <div class="hero-item hero-main" id="hero0">
+                <img src="" alt="" onerror="handleImgError(this)">
+                <div class="hero-overlay">
+                    <span class="hero-tag">CARREGANDO...</span>
+                    <h1 id="heroTitle0">Buscando as notícias mais importantes...</h1>
                 </div>
             </div>
-            <div class="hero-item sub-news">
-                <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800" alt="Destaque 2">
-                <div class="hero-content small">
-                    <span class="badge accent">MERCADO</span>
-                    <h2>Acompanhe as transferências...</h2>
+            <div class="hero-item" id="hero1">
+                <img src="" alt="" onerror="handleImgError(this)">
+                <div class="hero-overlay">
+                    <h2 id="heroTitle1">Atualizando bastidores...</h2>
                 </div>
             </div>
-            <div class="hero-item sub-news">
-                <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800" alt="Destaque 3">
-                <div class="hero-content small">
-                    <span class="badge accent">BRASILEIRÃO</span>
-                    <h2>Tudo sobre o campeonato...</h2>
+            <div class="hero-item" id="hero2">
+                <img src="" alt="" onerror="handleImgError(this)">
+                <div class="hero-overlay">
+                    <h2 id="heroTitle2">Acompanhe tudo sobre o futebol...</h2>
                 </div>
             </div>
         </section>
 
-        <div class="content-wrapper">
+        <!-- Layout em Duas Colunas -->
+        <div class="main-grid">
             <!-- Feed de Notícias -->
-            <section class="fn-feed">
-                <h2 class="section-label">NOTÍCIAS EM TEMPO REAL</h2>
-                <div id="news-container">
-                    <div class="loading">Carregando últimas notícias...</div>
+            <section>
+                <h2 class="section-title" id="page-label">ÚLTIMAS NOTÍCIAS</h2>
+                <div id="news-container" class="news-grid">
+                    <div class="loading">Sintonizando informações...</div>
                 </div>
             </section>
 
             <!-- Sidebar -->
-            <aside class="fn-sidebar">
+            <aside class="sidebar">
                 <div class="widget">
                     <div class="widget-head">BRASILEIRÃO 2026</div>
                     <div class="widget-body">
                         <table class="standings-table">
-                            <tbody id="standingsBody">
-                                <!-- JS -->
-                            </tbody>
+                            <tbody id="standingsBody"></tbody>
                         </table>
-                        <a class="full-link">TABELA COMPLETA <i class="fas fa-arrow-right"></i></a>
+                        <button class="full-link">TABELA COMPLETA <i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <div class="widget">
                     <div class="widget-head">JOGOS DE HOJE</div>
-                    <div class="widget-body" id="todayMatches">
-                        <!-- JS -->
-                    </div>
+                    <div class="widget-body" id="todayMatches"></div>
                 </div>
             </aside>
         </div>
     </main>
 
-    <footer class="fn-footer">
-        <div class="footer-container">
-            <div class="logo-area">
-                <span>f</span>
-                <div class="logo-u-container">
-                    <span class="logo-ball"><i class="fas fa-volleyball-ball"></i></span>
-                    <span>u</span>
-                </div>
-                <span>tnews</span>
-            </div>
-            <p>© 2026 FutNews - Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
     <!-- Modal Tabela Completa -->
-    <div id="tabelaModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>BRASILEIRÃO 2026 - TABELA COMPLETA</h2>
-            </div>
-            <div class="modal-body">
-                <table class="full-standings-table">
-                    <thead>
-                        <tr>
-                            <th>Pos</th>
-                            <th>Clube</th>
-                            <th>Pts</th>
-                            <th>PJ</th>
-                            <th>V</th>
-                            <th>E</th>
-                            <th>D</th>
-                            <th>SG</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fullStandingsBody">
-                        <!-- JS -->
-                    </tbody>
-                </table>
-            </div>
+    <div id="tabelaModal" class="article-modal">
+        <div class="modal-body">
+            <button class="close-btn">&times;</button>
+            <h2 class="section-title">BRASILEIRÃO 2026 - TABELA COMPLETA</h2>
+            <table class="standings-table">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px;">Pos</th>
+                        <th style="padding: 10px; text-align: left;">Clube</th>
+                        <th style="padding: 10px;">Pts</th>
+                        <th style="padding: 10px;">PJ</th>
+                        <th style="padding: 10px;">V</th>
+                        <th style="padding: 10px;">SG</th>
+                    </tr>
+                </thead>
+                <tbody id="fullStandingsBody"></tbody>
+            </table>
         </div>
     </div>
 
