@@ -11,7 +11,7 @@ const CATEGORY_FEEDS = {
     'selecao': [{ name: 'Seleção', url: 'https://ge.globo.com/rss/ge/selecao-brasileira/' }]
 };
 
-// Dados OFICIAIS Brasileirão 2026
+// Dados OFICIAIS Brasileirão 2026 (Sincronizado com a modal)
 const fullStandings2026 = [
     { pos: 1, team: 'Palmeiras', pts: 29, pj: 12, v: 9, e: 2, d: 1, sg: 12 },
     { pos: 2, team: 'Flamengo', pts: 23, pj: 11, v: 7, e: 2, d: 2, sg: 10 },
@@ -80,7 +80,7 @@ async function fetchNews(category = 'inicio') {
     const titles = { 'inicio': 'NOTÍCIAS EM TEMPO REAL', 'brasileirao': 'BRASILEIRÃO 2026', 'copa-do-brasil': 'COPA DO BRASIL', 'mercado': 'MERCADO DA BOLA', 'selecao': 'SELEÇÃO BRASILEIRA' };
     if (label) label.textContent = titles[category];
 
-    container.innerHTML = '<div class="loading">Sincronizando últimas do futebol...</div>';
+    container.innerHTML = '<div class="loading">Sintonizando últimas do futebol...</div>';
     let allNews = [];
     const feeds = CATEGORY_FEEDS[category] || CATEGORY_FEEDS['inicio'];
 
@@ -120,7 +120,6 @@ function renderNews(news) {
         </article>
     `).join('');
     
-    // ATUALIZAÇÃO CRÍTICA DO HERO
     updateHero(news.slice(0, 3));
 }
 
