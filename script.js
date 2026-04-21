@@ -4,58 +4,78 @@ const RSS_FEEDS = [
     { name: 'Gazeta Esportiva', url: 'https://www.gazetaesportiva.com/feed/' }
 ];
 
+// Função para extrair imagem do HTML caso o feed não forneça campo direto
+function extractImage(item) {
+    if (item.thumbnail) return item.thumbnail;
+    if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+    
+    // Tenta buscar no conteúdo (comum no GE e Trivela)
+    const content = item.content || item.description || '';
+    const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+    if (imgMatch && imgMatch[1]) return imgMatch[1];
+    
+    // Fallback: Imagem padrão FutNews com base na categoria
+    return `https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop`; 
+}
+
 async function fetchNews() {
     const container = document.getElementById('news-container');
     if (!container) return;
 
-    try {
-        let allNews = [];
+    let allNews = [];
 
-        for (const feed of RSS_FEEDS) {
-            // Usando rss2json para converter o feed para JSON (Grátis até 10k requests)
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&api_key=your_api_key_optional`);
+    for (const feed of RSS_FEEDS) {
+        try {
+            // Usando o serviço rss2json com um timestamp para evitar cache
+            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&t=${Date.now()}`);
             const data = await response.json();
             
-            if (data.status === 'ok') {
-                const newsItems = data.items.map(item => ({
-                    title: item.title,
-                    link: item.link,
-                    thumbnail: item.thumbnail || item.enclosure.link || 'https://via.placeholder.com/300x200/001f3f/ffffff?text=FutNews',
-                    category: feed.name,
-                    pubDate: new Date(item.pubDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                    desc: item.description.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...'
-                }));
+            if (data.status === 'ok' && data.items) {
+                const newsItems = data.items.map(item => {
+                    const img = extractImage(item);
+                    return {
+                        title: item.title,
+                        link: item.link,
+                        thumbnail: img,
+                        category: feed.name,
+                        pubDate: new Date(item.pubDate),
+                        desc: item.description.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...'
+                    };
+                });
                 allNews = [...allNews, ...newsItems];
             }
+        } catch (error) {
+            console.warn(`Erro ao carregar feed ${feed.name}:`, error);
         }
+    }
 
-        // Embaralhar e pegar as 6 mais recentes
-        allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-        renderDynamicNews(allNews.slice(0, 8));
-
-    } catch (error) {
-        console.error('Erro ao buscar notícias:', error);
-        container.innerHTML = '<div class="error">Não foi possível carregar as notícias. Tente novamente mais tarde.</div>';
+    if (allNews.length > 0) {
+        // Ordenar por data (mais recentes primeiro)
+        allNews.sort((a, b) => b.pubDate - a.pubDate);
+        renderDynamicNews(allNews.slice(0, 10));
+    } else {
+        container.innerHTML = '<div class="error">Nenhuma notícia encontrada no momento.</div>';
     }
 }
 
 function renderDynamicNews(news) {
     const container = document.getElementById('news-container');
+    if (!container) return;
+
     container.innerHTML = news.map(item => `
         <article class="feed-card" onclick="window.open('${item.link}', '_blank')">
             <div class="card-img">
-                <img src="${item.thumbnail}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x200/001f3f/ffffff?text=FutNews'">
+                <img src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop'">
             </div>
             <div class="card-info">
                 <span class="tag">${item.category}</span>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
-                <span class="time">Publicado às ${item.pubDate}</span>
+                <span class="time">Hoje às ${item.pubDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
         </article>
     `).join('');
 
-    // Atualiza também os destaques do topo com as 3 primeiras
     updateHeroSection(news.slice(0, 3));
 }
 
@@ -64,11 +84,14 @@ function updateHeroSection(heroNews) {
     heroNews.forEach((news, index) => {
         if (heroItems[index]) {
             const img = heroItems[index].querySelector('img');
-            const h1 = heroItems[index].querySelector('h1') || heroItems[index].querySelector('h2');
+            const titleElement = heroItems[index].querySelector('h1') || heroItems[index].querySelector('h2');
             const badge = heroItems[index].querySelector('.badge');
             
-            if (img) img.src = news.thumbnail;
-            if (h1) h1.textContent = news.title;
+            if (img) {
+                img.src = news.thumbnail;
+                img.style.opacity = "1";
+            }
+            if (titleElement) titleElement.textContent = news.title;
             if (badge) badge.textContent = news.category;
             
             heroItems[index].onclick = () => window.open(news.link, '_blank');
@@ -76,7 +99,7 @@ function updateHeroSection(heroNews) {
     });
 }
 
-// Manter as mecânicas de tabela e jogos
+// Mecânica de Tabela
 const standings = [
     { pos: 1, team: 'Flamengo', points: 28 },
     { pos: 2, team: 'Palmeiras', points: 26 },
@@ -103,6 +126,5 @@ function renderStandings() {
 document.addEventListener('DOMContentLoaded', () => {
     renderStandings();
     fetchNews();
-    // Atualizar a cada 10 minutos
-    setInterval(fetchNews, 600000);
+    setInterval(fetchNews, 300000); // Atualiza a cada 5 minutos
 });
