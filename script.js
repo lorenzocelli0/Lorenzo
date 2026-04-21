@@ -10,9 +10,9 @@ const standings = [
 ];
 
 const matches = [
-    { competition: 'Copa do Brasil', time: '19:30', home: 'Grêmio', away: 'Confiança' },
-    { competition: 'Copa do Brasil', time: '21:30', home: 'Barra', away: 'Corinthians' },
-    { competition: 'Copa do Brasil', time: '21:30', home: 'Paysandu', away: 'Vasco' }
+    { competition: 'COPA DO BRASIL', time: '19:30', home: 'Grêmio', away: 'Confiança' },
+    { competition: 'COPA DO BRASIL', time: '21:30', home: 'Barra', away: 'Corinthians' },
+    { competition: 'COPA DO BRASIL', time: '21:30', home: 'Paysandu', away: 'Vasco' }
 ];
 
 function renderStandings() {
@@ -21,7 +21,7 @@ function renderStandings() {
     
     body.innerHTML = standings.map(s => `
         <tr>
-            <td><span style="color: #999; margin-right: 10px;">${s.pos}</span> <span class="team-name">${s.team}</span></td>
+            <td><span style="color: #999; margin-right: 12px; font-weight: 800;">${s.pos}</span> <span class="team-name">${s.team}</span></td>
             <td class="points">${s.points}</td>
         </tr>
     `).join('');
@@ -36,14 +36,13 @@ function renderMatches() {
             <div class="match-info">${m.competition} • HOJE ${m.time}</div>
             <div class="match-teams">
                 <span>${m.home}</span>
-                <span class="match-vs">X</span>
+                <span class="match-vs">VS</span>
                 <span>${m.away}</span>
             </div>
         </div>
     `).join('');
 }
 
-// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     renderStandings();
     renderMatches();

@@ -3,133 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ge.globo - Fique por dentro de tudo no esporte</title>
+    <title>FutNews - A sua central do futebol</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header estilo GE -->
-    <header class="ge-header">
-        <div class="header-top">
-            <div class="header-content">
-                <div class="menu-left">
-                    <div class="menu-icon"><i class="fas fa-bars"></i> MENU</div>
-                    <div class="times-icon"><i class="fas fa-shield-halved"></i> TIMES</div>
-                </div>
-                <div class="logo-ge">ge</div>
-                <div class="menu-right">
-                    <div class="search-bar">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="BUSCAR">
-                    </div>
-                    <div class="user-auth">
-                        <i class="fas fa-user-circle"></i> Entrar
-                    </div>
-                </div>
+    <!-- Header FutNews -->
+    <header class="fn-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="logo-icon">⚽</span>
+                <span class="logo-text">Fut<span class="text-accent">News</span></span>
             </div>
-        </div>
-        <div class="header-bottom">
-            <div class="header-content">
-                <nav class="ge-nav">
-                    <a href="#">brasileirão</a>
-                    <a href="#">copa do brasil</a>
-                    <a href="#">libertadores</a>
-                    <a href="#">mercado da bola</a>
-                    <a href="#">vôlei</a>
-                    <a href="#">basquete</a>
-                </nav>
+            <nav class="fn-nav">
+                <a href="#" class="active">INÍCIO</a>
+                <a href="#">BRASILEIRÃO</a>
+                <a href="#">COPA DO BRASIL</a>
+                <a href="#">MERCADO</a>
+                <a href="#">SELEÇÃO</a>
+            </nav>
+            <div class="user-area">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                </div>
+                <button class="btn-login">ENTRAR</button>
             </div>
         </div>
     </header>
 
-    <main class="ge-container">
-        <div class="ge-main-content">
-            <!-- Hero Grid -->
-            <section class="ge-hero-grid">
-                <div class="hero-main">
-                    <img src="https://s2-ge.glbimg.com/Z6p6yX_R-vGvH-0Z9pLqZpX-Zz0=/0x0:1080x608/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/G/J/6ZlZ3TSRK6lWz3TSRK6w/estevao-chelsea.jpg" alt="Estevão e Endrick">
-                    <div class="hero-overlay">
-                        <h1 class="hero-title">DORIVAL DE OLHO NA EUROPA: ESTÊVÃO E ENDRICK SÃO NOMES CERTOS EM JUNHO</h1>
-                        <p class="hero-subtitle">Técnico da Seleção Brasileira inicia giro europeu para observar joias de Chelsea e Real Madrid antes das Eliminatórias.</p>
-                    </div>
+    <main class="fn-container">
+        <!-- Layout Diferente: Hero Section com 3 Colunas -->
+        <section class="fn-hero-section">
+            <div class="hero-item main-news">
+                <img src="https://s2-ge.glbimg.com/Z6p6yX_R-vGvH-0Z9pLqZpX-Zz0=/0x0:1080x608/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/G/J/6ZlZ3TSRK6lWz3TSRK6w/estevao-chelsea.jpg" alt="Destaque">
+                <div class="hero-content">
+                    <span class="badge">SELEÇÃO BRASILEIRA</span>
+                    <h1>Dorival de olho na Europa: Estêvão e Endrick são nomes certos para Junho</h1>
                 </div>
-                <div class="hero-side">
-                    <div class="hero-side-item">
-                        <img src="https://s2-ge.glbimg.com/O6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/484x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/M/L/MLlZ3TSRK6lWz3TSRK6w/vasco-saf.jpg" alt="Vasco SAF">
-                        <div class="hero-side-overlay">
-                            <h2>Vasco anuncia R$ 150 milhões para reforços na janela de julho</h2>
-                        </div>
-                    </div>
-                    <div class="hero-side-item">
-                        <img src="https://s2-ge.glbimg.com/I6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/484x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/C/R/CRlZ3TSRK6lWz3TSRK6w/corinthians-pressao.jpg" alt="Pressão Corinthians">
-                        <div class="hero-side-overlay">
-                            <h2>Ultimato no Timão: resultado na Copa do Brasil define futuro de técnico</h2>
-                        </div>
-                    </div>
+            </div>
+            <div class="hero-item sub-news">
+                <img src="https://s2-ge.glbimg.com/O6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/484x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/M/L/MLlZ3TSRK6lWz3TSRK6w/vasco-saf.jpg" alt="Vasco">
+                <div class="hero-content small">
+                    <span class="badge accent">VASCO</span>
+                    <h2>A "Era SAF 2.0": R$ 150 milhões para reforços em Julho</h2>
                 </div>
-            </section>
+            </div>
+            <div class="hero-item sub-news">
+                <img src="https://s2-ge.glbimg.com/I6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/484x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/C/R/CRlZ3TSRK6lWz3TSRK6w/corinthians-pressao.jpg" alt="Corinthians">
+                <div class="hero-content small">
+                    <span class="badge accent">CORINTHIANS</span>
+                    <h2>Pressão na Fiel: Ultimato para o técnico na Copa do Brasil</h2>
+                </div>
+            </div>
+        </section>
 
-            <!-- Lista de Notícias -->
-            <section class="ge-news-feed">
-                <article class="feed-item">
-                    <div class="feed-image">
-                        <img src="https://s2-ge.glbimg.com/B6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/300x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/I/N/INlZ3TSRK6lWz3TSRK6w/inter-estadio.jpg" alt="Inter Estadio">
+        <div class="content-wrapper">
+            <!-- Feed de Notícias -->
+            <section class="fn-feed">
+                <h2 class="section-label">NOTÍCIAS RECENTES</h2>
+                
+                <article class="feed-card">
+                    <div class="card-img">
+                        <img src="https://s2-ge.glbimg.com/B6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/300x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/I/N/INlZ3TSRK6lWz3TSRK6w/inter-estadio.jpg" alt="Inter">
                     </div>
-                    <div class="feed-content">
-                        <span class="feed-category">internacional</span>
-                        <h3 class="feed-title">Novo Beira-Rio? Boatos de reforma tecnológica transformariam estádio em polo 24h</h3>
-                        <p class="feed-desc">Projeto segue modelo do Real Madrid para transformar o entorno do estádio em centro de entretenimento.</p>
-                        <span class="feed-time">Há 2 horas — Em Porto Alegre</span>
+                    <div class="card-info">
+                        <span class="tag">INTERNACIONAL</span>
+                        <h3>Novo Beira-Rio: Boatos de reforma tecnológica transformariam entorno em polo 24h</h3>
+                        <p>Seguindo modelo do Real Madrid, projeto visa entretenimento e novas receitas.</p>
+                        <span class="time">Há 2 horas — Porto Alegre</span>
                     </div>
                 </article>
 
-                <article class="feed-item">
-                    <div class="feed-image">
+                <article class="feed-card">
+                    <div class="card-img">
                         <img src="https://s2-ge.glbimg.com/C6M9k1Z9M1Z9M1Z9M1Z9M1Z9M1Z9=/0x0:1080x608/300x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f4661a387277684b1d558/internal_photos/bs/2024/C/R/CRlZ3TSRK6lWz3TSRK6w/cruzeiro-investimento.jpg" alt="Cruzeiro">
                     </div>
-                    <div class="feed-content">
-                        <span class="feed-category">cruzeiro</span>
-                        <h3 class="feed-title">Cruzeiro na mira de árabes: Investidores sondam compra de parte das ações da SAF</h3>
-                        <p class="feed-desc">Promessa é de teto salarial digno de Premier League para recolocar a Raposa no topo da América.</p>
-                        <span class="feed-time">Há 45 minutos — Em Belo Horizonte</span>
+                    <div class="card-info">
+                        <span class="tag">CRUZEIRO</span>
+                        <h3>Investidores árabes sondam compra de parte das ações da SAF celeste</h3>
+                        <p>Promessa de investimento pesado para teto salarial de nível europeu.</p>
+                        <span class="time">Há 45 min — Belo Horizonte</span>
                     </div>
                 </article>
             </section>
+
+            <!-- Sidebar com Mecânicas -->
+            <aside class="fn-sidebar">
+                <div class="widget">
+                    <div class="widget-head">BRASILEIRÃO 2026</div>
+                    <div class="widget-body">
+                        <table class="standings-table">
+                            <tbody id="standingsBody">
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                        <a href="#" class="full-link">TABELA COMPLETA <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-head">JOGOS DE HOJE</div>
+                    <div class="widget-body" id="todayMatches">
+                        <!-- JS -->
+                    </div>
+                </div>
+            </aside>
         </div>
-
-        <!-- Sidebar -->
-        <aside class="ge-sidebar">
-            <div class="sidebar-widget">
-                <div class="widget-header">
-                    <h4>CAMPEONATO BRASILEIRO</h4>
-                </div>
-                <div class="widget-content">
-                    <table class="ge-table">
-                        <thead>
-                            <tr>
-                                <th>Classificação</th>
-                                <th>P</th>
-                            </tr>
-                        </thead>
-                        <tbody id="standingsBody">
-                            <!-- JS preencherá -->
-                        </tbody>
-                    </table>
-                    <a href="#" class="view-more">Ver tabela completa <i class="fas fa-chevron-right"></i></a>
-                </div>
-            </div>
-
-            <div class="sidebar-widget">
-                <div class="widget-header">
-                    <h4>JOGOS DO DIA</h4>
-                </div>
-                <div class="widget-content" id="todayMatches">
-                    <!-- JS preencherá -->
-                </div>
-            </div>
-        </aside>
     </main>
+
+    <footer class="fn-footer">
+        <div class="footer-container">
+            <div class="logo-area">
+                <span class="logo-icon">⚽</span>
+                <span class="logo-text">Fut<span class="text-accent">News</span></span>
+            </div>
+            <p>© 2026 FutNews - Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
