@@ -14,16 +14,17 @@
 body { font-family: 'Inter', sans-serif; background: var(--fn-bg); color: var(--fn-text); line-height: 1.6; }
 
 /* Header FutNews */
-.fn-header { background: var(--fn-blue-dark); color: var(--fn-white); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: var(--fn-shadow); }
+.fn-header { background: var(--fn-white); color: var(--fn-text); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: var(--fn-shadow); }
 .header-container { max-width: 1240px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
 
-.logo-area { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
-.logo-icon { font-size: 28px; }
-.text-accent { color: var(--fn-accent); }
+.logo-area { display: flex; align-items: center; gap: 2px; font-size: 32px; font-weight: 700; letter-spacing: -1.5px; color: #4d4d4d; font-family: 'Inter', sans-serif; }
+.logo-u-container { position: relative; display: inline-block; }
+.logo-ball { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 18px; color: #5da048; }
+.logo-text { color: #4d4d4d; text-transform: lowercase; }
 
 .fn-nav { display: flex; gap: 25px; }
-.fn-nav a { color: var(--fn-white); text-decoration: none; font-size: 13px; font-weight: 700; opacity: 0.8; transition: 0.3s; }
-.fn-nav a:hover, .fn-nav a.active { opacity: 1; color: var(--fn-accent); }
+.fn-nav a { color: var(--fn-text); text-decoration: none; font-size: 13px; font-weight: 700; opacity: 0.8; transition: 0.3s; }
+.fn-nav a:hover, .fn-nav a.active { opacity: 1; color: var(--fn-blue-primary); }
 
 .user-area { display: flex; align-items: center; gap: 20px; }
 .search-box { cursor: pointer; font-size: 18px; }
