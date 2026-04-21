@@ -26,6 +26,9 @@
                 <a href="#" class="nav-link" data-tab="mercado">MERCADO</a>
                 <a href="#" class="nav-link" data-tab="selecao">SELEÇÃO</a>
             </nav>
+            <button class="theme-toggle" id="themeToggle" title="Trocar Tema">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </header>
 
@@ -33,13 +36,13 @@
     <div class="live-section">
         <div class="container">
             <div id="live-container" class="live-scroll">
-                <span class="loading-live">Verificando jogos ao vivo...</span>
+                <span class="no-live">Verificando jogos ao vivo...</span>
             </div>
         </div>
     </div>
 
     <main class="container">
-        <!-- Hero Section Dinâmico -->
+        <!-- Hero Section -->
         <section class="hero-grid">
             <div class="hero-item hero-main" id="hero0">
                 <img src="" alt="" onerror="handleImgError(this)">
@@ -62,13 +65,19 @@
             </div>
         </section>
 
-        <!-- Layout em Duas Colunas -->
         <div class="main-grid">
-            <!-- Feed de Notícias -->
             <section>
-                <h2 class="section-title" id="page-label">ÚLTIMAS NOTÍCIAS</h2>
+                <h2 class="section-title" id="page-label">NOTÍCIAS EM TEMPO REAL</h2>
                 <div id="news-container" class="news-grid">
                     <div class="loading">Sintonizando informações...</div>
+                </div>
+
+                <!-- SEÇÃO ÚLTIMAS NOTÍCIAS (Lista Rápida) -->
+                <div class="quick-news-section">
+                    <h2 class="section-title">⚡ ÚLTIMAS NOTÍCIAS</h2>
+                    <ul id="quick-news-list" class="quick-news-list">
+                        <!-- JS preencherá -->
+                    </ul>
                 </div>
             </section>
 
@@ -92,24 +101,31 @@
         </div>
     </main>
 
-    <!-- Modal Tabela Completa -->
+    <footer class="footer" style="text-align: center; padding: 40px 0; background: var(--fn-white); border-top: 1px solid var(--fn-border); margin-top: 60px;">
+        <div class="logo-area" style="justify-content: center; margin-bottom: 10px;">
+            <span>f</span>
+            <div class="logo-u-container">
+                <span class="logo-ball"><i class="fas fa-futbol"></i></span>
+                <span>u</span>
+            </div>
+            <span>tnews</span>
+        </div>
+        <p style="font-size: 13px; color: var(--fn-text-light);">© 2026 FutNews - Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Modal com Disqus -->
     <div id="tabelaModal" class="article-modal">
         <div class="modal-body">
             <button class="close-btn">&times;</button>
-            <h2 class="section-title">BRASILEIRÃO 2026 - TABELA COMPLETA</h2>
-            <table class="standings-table">
-                <thead>
-                    <tr style="border-bottom: 2px solid #eee;">
-                        <th style="padding: 10px;">Pos</th>
-                        <th style="padding: 10px; text-align: left;">Clube</th>
-                        <th style="padding: 10px;">Pts</th>
-                        <th style="padding: 10px;">PJ</th>
-                        <th style="padding: 10px;">V</th>
-                        <th style="padding: 10px;">SG</th>
-                    </tr>
-                </thead>
-                <tbody id="fullStandingsBody"></tbody>
-            </table>
+            <div id="modal-content-area">
+                <!-- Conteúdo da notícia será injetado aqui -->
+            </div>
+            
+            <!-- SISTEMA DE COMENTÁRIOS DISQUS -->
+            <div class="comments-container">
+                <h3 class="section-title">Comentários</h3>
+                <div id="disqus_thread"></div>
+            </div>
         </div>
     </div>
 
