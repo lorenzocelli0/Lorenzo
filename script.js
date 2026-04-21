@@ -35,38 +35,47 @@ const fullStandings2026 = [
     { pos: 20, team: 'Chapecoense', pts: 8, pj: 11, v: 1, e: 5, d: 5, sg: -11 }
 ];
 
-// Banco de imagens de reserva ampliado (10 imagens variadas)
-const fallbacks = [
-    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1511886929837-399a8a11bcac?q=80&w=800&auto=format&fit=crop'
+// Banco de imagens de reserva ampliado e temático
+const footballFallbacks = [
+    'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop', // Estádio
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop', // Chuteira/Bola
+    'https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop', // Jogo
+    'https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop', // Torcida
+    'https://images.unsplash.com/photo-1551280857-2b9bbe52cfcd?q=80&w=800&auto=format&fit=crop', // Placar
+    'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop', // Gramado
+    'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop', // Luva Goleiro
+    'https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=800&auto=format&fit=crop', // Bandeira Escanteio
+    'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop', // Rede Gol
+    'https://images.unsplash.com/photo-1511886929837-399a8a11bcac?q=80&w=800&auto=format&fit=crop'  // Treino
 ];
 
-let currentCategory = 'inicio';
+// Função global para lidar com erro de imagem e trocar por uma aleatória
+function handleImgError(img) {
+    const randomIdx = Math.floor(Math.random() * footballFallbacks.length);
+    img.src = footballFallbacks[randomIdx];
+    img.onerror = null; // Evita loop infinito
+}
 
-// Função para escolher imagem baseada no título (garante variedade)
-function getFallbackByTitle(title) {
+function getSmartFallback(title) {
     let hash = 0;
     for (let i = 0; i < title.length; i++) {
         hash = title.charCodeAt(i) + ((hash << 5) - hash);
     }
-    const index = Math.abs(hash % fallbacks.length);
-    return fallbacks[index];
+    const index = Math.abs(hash % footballFallbacks.length);
+    return footballFallbacks[index];
 }
 
 function extractImage(item) {
-    if (item.thumbnail && item.thumbnail !== '') return item.thumbnail;
-    if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+    // Se já tiver thumbnail e não for uma imagem quebrada conhecida
+    if (item.thumbnail && item.thumbnail !== '' && !item.thumbnail.includes('ge_placeholder')) return item.thumbnail;
+    
+    // Tenta achar no conteúdo HTML
     const content = item.content || item.description || '';
     const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
-    return (imgMatch && imgMatch[1]) ? imgMatch[1] : getFallbackByTitle(item.title);
+    if (imgMatch && imgMatch[1]) return imgMatch[1];
+    
+    // Fallback inteligente
+    return getSmartFallback(item.title);
 }
 
 async function fetchNews(category = 'inicio') {
@@ -77,7 +86,7 @@ async function fetchNews(category = 'inicio') {
     const titles = { 'inicio': 'NOTÍCIAS EM TEMPO REAL', 'brasileirao': 'BRASILEIRÃO 2026', 'copa-do-brasil': 'COPA DO BRASIL', 'mercado': 'MERCADO DA BOLA', 'selecao': 'SELEÇÃO BRASILEIRA' };
     if (label) label.textContent = titles[category];
 
-    container.innerHTML = '<div class="loading">Buscando notícias exclusivas...</div>';
+    container.innerHTML = '<div class="loading">Sintonizando informações...</div>';
     let allNews = [];
     const feeds = CATEGORY_FEEDS[category] || CATEGORY_FEEDS['inicio'];
 
@@ -106,13 +115,13 @@ function renderNews(news) {
     container.innerHTML = news.map(item => `
         <article class="feed-card" onclick="window.open('${item.link}', '_blank')">
             <div class="card-img">
-                <img src="${item.thumbnail}" onerror="this.src='${getFallbackByTitle(item.title)}'">
+                <img src="${item.thumbnail}" onerror="handleImgError(this)">
             </div>
             <div class="card-info">
                 <span class="tag">${item.category}</span>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
-                <span class="time">Publicado hoje às ${item.pubDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                <span class="time">Hoje às ${item.pubDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
         </article>
     `).join('');
@@ -125,7 +134,7 @@ function updateHero(news) {
         if (items[i]) {
             const img = items[i].querySelector('img');
             img.src = n.thumbnail;
-            img.onerror = () => { img.src = getFallbackByTitle(n.title); };
+            img.onerror = () => handleImgError(img);
             const title = items[i].querySelector('h1') || items[i].querySelector('h2');
             if (title) title.textContent = n.title;
             items[i].querySelector('.badge').textContent = n.category;
