@@ -47,7 +47,7 @@
             <div class="hero-item hero-main" id="hero0">
                 <img src="" alt="" onerror="handleImgError(this)">
                 <div class="hero-overlay">
-                    <span class="hero-tag">CARREGANDO...</span>
+                    <span class="hero-tag">DESTAQUE</span>
                     <h1 id="heroTitle0">Buscando as notícias mais importantes...</h1>
                 </div>
             </div>
@@ -67,21 +67,12 @@
 
         <div class="main-grid">
             <section>
-                <h2 class="section-title" id="page-label">NOTÍCIAS EM TEMPO REAL</h2>
+                <h2 class="section-title" id="page-label">ÚLTIMAS NOTÍCIAS</h2>
                 <div id="news-container" class="news-grid">
                     <div class="loading">Sintonizando informações...</div>
                 </div>
-
-                <!-- SEÇÃO ÚLTIMAS NOTÍCIAS (Lista Rápida) -->
-                <div class="quick-news-section">
-                    <h2 class="section-title">⚡ ÚLTIMAS NOTÍCIAS</h2>
-                    <ul id="quick-news-list" class="quick-news-list">
-                        <!-- JS preencherá -->
-                    </ul>
-                </div>
             </section>
 
-            <!-- Sidebar -->
             <aside class="sidebar">
                 <div class="widget">
                     <div class="widget-head">BRASILEIRÃO 2026</div>
@@ -113,19 +104,24 @@
         <p style="font-size: 13px; color: var(--fn-text-light);">© 2026 FutNews - Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Modal com Disqus -->
+    <!-- Modal Tabela Completa -->
     <div id="tabelaModal" class="article-modal">
         <div class="modal-body">
             <button class="close-btn">&times;</button>
-            <div id="modal-content-area">
-                <!-- Conteúdo da notícia será injetado aqui -->
-            </div>
-            
-            <!-- SISTEMA DE COMENTÁRIOS DISQUS -->
-            <div class="comments-container">
-                <h3 class="section-title">Comentários</h3>
-                <div id="disqus_thread"></div>
-            </div>
+            <h2 class="section-title">BRASILEIRÃO 2026 - TABELA COMPLETA</h2>
+            <table class="standings-table">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px;">Pos</th>
+                        <th style="padding: 10px; text-align: left;">Clube</th>
+                        <th style="padding: 10px;">Pts</th>
+                        <th style="padding: 10px;">PJ</th>
+                        <th style="padding: 10px;">V</th>
+                        <th style="padding: 10px;">SG</th>
+                    </tr>
+                </thead>
+                <tbody id="fullStandingsBody"></tbody>
+            </table>
         </div>
     </div>
 
