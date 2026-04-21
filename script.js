@@ -7,28 +7,35 @@ const CATEGORY_FEEDS = {
     'selecao': [{ name: 'Seleção', url: 'https://ge.globo.com/rss/ge/selecao-brasileira/' }]
 };
 
+// Dados Seleção Brasileira 2026
+const selecaoInfo = {
+    proximaConvocacao: '15 de Maio de 2026',
+    objetivo: 'Eliminatórias Copa 2026',
+    principaisNomes: ['Vinícius Jr', 'Rodrygo', 'Endrick', 'Estêvão']
+};
+
 // Dados Tabela 2026 (Fiel à imagem)
 const standings2026 = [
-    { pos: 1, team: 'Palmeiras', pts: 29, pj: 12, v: 9, sg: 12, trend: 'up' },
-    { pos: 2, team: 'Flamengo', pts: 23, pj: 11, v: 7, sg: 10, trend: 'none' },
-    { pos: 3, team: 'Fluminense', pts: 23, pj: 12, v: 7, sg: 6, trend: 'up' },
-    { pos: 4, team: 'São Paulo', pts: 20, pj: 12, v: 6, sg: 5, trend: 'down' },
-    { pos: 5, team: 'Bahia', pts: 20, pj: 11, v: 6, sg: 3, trend: 'none' },
-    { pos: 6, team: 'Athletico-PR', pts: 19, pj: 12, v: 6, sg: 3, trend: 'none' },
-    { pos: 7, team: 'Coritiba', pts: 19, pj: 12, v: 5, sg: 3, trend: 'up' },
-    { pos: 8, team: 'Bragantino', pts: 17, pj: 12, v: 5, sg: 1, trend: 'down' },
-    { pos: 9, team: 'Botafogo', pts: 16, pj: 11, v: 5, sg: 0, trend: 'down' },
-    { pos: 10, team: 'Vasco da Gama', pts: 16, pj: 12, v: 4, sg: 0, trend: 'up' },
-    { pos: 11, team: 'EC Vitória', pts: 15, pj: 11, v: 4, sg: -3, trend: 'up' },
-    { pos: 12, team: 'Atlético-MG', pts: 14, pj: 12, v: 4, sg: -1, trend: 'down' },
-    { pos: 13, team: 'Grêmio', pts: 13, pj: 12, v: 3, sg: -2, trend: 'down' },
-    { pos: 14, team: 'Fortaleza', pts: 13, pj: 12, v: 3, sg: -4, trend: 'down' },
-    { pos: 15, team: 'Cuiabá', pts: 12, pj: 11, v: 3, sg: -5, trend: 'down' },
-    { pos: 16, team: 'Ceará', pts: 12, pj: 12, v: 3, sg: -6, trend: 'down' },
-    { pos: 17, team: 'Corinthians', pts: 12, pj: 12, v: 2, sg: -3, trend: 'none' },
-    { pos: 18, team: 'Mirassol', pts: 9, pj: 11, v: 2, sg: -4, trend: 'down' },
-    { pos: 19, team: 'Remo', pts: 8, pj: 12, v: 1, sg: -9, trend: 'up' },
-    { pos: 20, team: 'Chapecoense', pts: 8, pj: 11, v: 1, sg: -11, trend: 'down' }
+    { pos: 1, team: 'Palmeiras', pts: 29, trend: 'up' },
+    { pos: 2, team: 'Flamengo', pts: 23, trend: 'none' },
+    { pos: 3, team: 'Fluminense', pts: 23, trend: 'up' },
+    { pos: 4, team: 'São Paulo', pts: 20, trend: 'down' },
+    { pos: 5, team: 'Bahia', pts: 20, trend: 'none' },
+    { pos: 6, team: 'Athletico-PR', pts: 19, trend: 'none' },
+    { pos: 7, team: 'Coritiba', pts: 19, trend: 'up' },
+    { pos: 8, team: 'Bragantino', pts: 17, trend: 'down' },
+    { pos: 9, team: 'Botafogo', pts: 16, trend: 'down' },
+    { pos: 10, team: 'Vasco da Gama', pts: 16, trend: 'up' },
+    { pos: 11, team: 'EC Vitória', pts: 15, trend: 'up' },
+    { pos: 12, team: 'Atlético-MG', pts: 14, trend: 'down' },
+    { pos: 13, team: 'Grêmio', pts: 13, trend: 'down' },
+    { pos: 14, team: 'Fortaleza', pts: 13, trend: 'down' },
+    { pos: 15, team: 'Cuiabá', pts: 12, trend: 'down' },
+    { pos: 16, team: 'Ceará', pts: 12, trend: 'down' },
+    { pos: 17, team: 'Corinthians', pts: 12, trend: 'none' },
+    { pos: 18, team: 'Mirassol', pts: 9, trend: 'down' },
+    { pos: 19, team: 'Remo', pts: 8, trend: 'up' },
+    { pos: 20, team: 'Chapecoense', pts: 8, trend: 'down' }
 ];
 
 const footballFallbacks = [
@@ -51,16 +58,14 @@ function extractImage(item) {
     return match ? match[1] : footballFallbacks[Math.floor(Math.random() * footballFallbacks.length)];
 }
 
-// MODO ESCURO (Restaurado)
+// MODO ESCURO
 function initTheme() {
     const toggle = document.getElementById('themeToggle');
     const body = document.body;
-    
     if (localStorage.getItem('theme') === 'dark') {
         body.setAttribute('data-theme', 'dark');
         toggle.innerHTML = '<i class="fas fa-sun"></i>';
     }
-
     toggle.addEventListener('click', () => {
         const isDark = body.getAttribute('data-theme') === 'dark';
         body.setAttribute('data-theme', isDark ? 'light' : 'dark');
@@ -96,7 +101,13 @@ async function fetchNews(category = 'inicio') {
     const titles = { 'inicio': 'ÚLTIMAS NOTÍCIAS', 'brasileirao': 'BRASILEIRÃO 2026', 'copa-do-brasil': 'COPA DO BRASIL', 'mercado': 'MERCADO DA BOLA', 'selecao': 'SELEÇÃO BRASILEIRA' };
     if (label) label.textContent = titles[category];
 
-    container.innerHTML = '<div class="loading">Sincronizando últimas do futebol...</div>';
+    container.innerHTML = '<div class="loading">Sintonizando últimas do futebol...</div>';
+    
+    // Conteúdo extra para aba Seleção
+    if (category === 'selecao') {
+        renderSelecaoHeader();
+    }
+
     let allNews = [];
     const feeds = CATEGORY_FEEDS[category] || CATEGORY_FEEDS['inicio'];
 
@@ -118,6 +129,19 @@ async function fetchNews(category = 'inicio') {
         allNews.sort((a, b) => b.pubDate - a.pubDate);
         renderNews(allNews.slice(0, 10));
     }
+}
+
+function renderSelecaoHeader() {
+    const container = document.getElementById('news-container');
+    const div = document.createElement('div');
+    div.style = "background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+    div.innerHTML = `
+        <h4 style="color:#0044cc; margin-bottom: 10px;">🇧🇷 Radar da Seleção</h4>
+        <p style="font-size:14px;"><strong>Próxima Convocação:</strong> ${selecaoInfo.proximaConvocacao}</p>
+        <p style="font-size:14px;"><strong>Foco:</strong> ${selecaoInfo.objetivo}</p>
+        <p style="font-size:14px; margin-top: 8px;"><strong>Destaques:</strong> ${selecaoInfo.principaisNomes.join(', ')}</p>
+    `;
+    container.parentNode.insertBefore(div, container);
 }
 
 function renderNews(news) {
@@ -163,11 +187,9 @@ function renderStandings() {
         full.innerHTML = standings2026.map(s => `
             <tr>
                 <td><strong>${s.pos}</strong></td>
-                <td><strong>${s.team}</strong></td>
+                <td style="text-align:left; padding-left:15px;"><strong>${s.team}</strong></td>
                 <td><strong>${s.pts}</strong></td>
-                <td>${s.pj}</td>
-                <td>${s.v}</td>
-                <td>${s.sg}</td>
+                <td>12</td><td>${s.v}</td><td>${s.sg}</td>
             </tr>
         `).join('');
     }
@@ -179,8 +201,12 @@ function renderMatches() {
     if (container) {
         container.innerHTML = matches.map(m => `
             <div class="match-item">
-                <div class="match-info">COPA DO BRASIL • HOJE ${m.t}</div>
-                <div class="match-teams"><span>${m.h}</span><span class="match-vs">VS</span><span>${m.a}</span></div>
+                <span class="match-info">COPA DO BRASIL • HOJE ${m.t}</span>
+                <div class="match-teams">
+                    <span>${m.h}</span>
+                    <span class="match-vs">VS</span>
+                    <span>${m.a}</span>
+                </div>
             </div>
         `).join('');
     }
@@ -199,7 +225,13 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const tab = link.getAttribute('data-tab');
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
+            const activeLink = document.querySelector(`.nav-link[data-tab="${tab}"]`);
+            if (activeLink) activeLink.classList.add('active');
+            
+            // Limpa conteúdo extra anterior se existir
+            const extra = document.querySelector('[style*="radar-selecao"]');
+            if (extra) extra.remove();
+
             fetchNews(tab);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });

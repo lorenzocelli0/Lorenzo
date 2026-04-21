@@ -51,18 +51,21 @@ body { font-family: 'Inter', sans-serif; background: var(--fn-bg); color: var(--
 .hero-item h1 { font-size: 28px; font-weight: 800; margin-top: 10px; line-height: 1.1; }
 .hero-item h2 { font-size: 16px; font-weight: 700; margin-top: 5px; }
 
-/* Tabela Sidebar - CORRIGIDA */
-.widget { background: var(--fn-white); border-radius: var(--fn-radius); box-shadow: var(--fn-shadow); overflow: hidden; border: 1px solid var(--fn-border); margin-bottom: 20px; }
-.widget-head { background: var(--fn-blue-dark); color: white; padding: 12px 15px; font-weight: 800; font-size: 13px; text-transform: uppercase; }
-.widget-body { padding: 10px 15px; }
+/* Tabela Sidebar - ALINHAMENTO CORRIGIDO */
+.standings-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.standings-table td { padding: 12px 5px; vertical-align: middle; border-bottom: 1px solid var(--fn-border); }
+.td-pos { width: 45px; font-weight: 800; color: #999; text-align: left; }
+.team-name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.points { width: 35px; text-align: right; font-weight: 900; color: var(--fn-blue-primary); font-size: 15px; }
 
-.standings-table { width: 100%; border-collapse: collapse; }
-.standings-table tr { border-bottom: 1px solid var(--fn-border); }
-.standings-table tr:last-child { border-bottom: none; }
-.standings-table td { padding: 10px 0; vertical-align: middle; }
-.td-pos { font-weight: 800; color: #999; display: flex; align-items: center; gap: 4px; min-width: 45px; }
-.team-name { font-weight: 700; font-size: 14px; }
-.points { text-align: right; font-weight: 900; color: var(--fn-blue-primary); font-size: 15px; }
+/* Jogos de Hoje - NOVO LAYOUT */
+.match-item { background: var(--fn-bg); border-radius: 8px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--fn-border); transition: 0.2s; }
+.match-item:hover { border-color: var(--fn-blue-primary); transform: translateX(3px); }
+.match-info { font-size: 10px; color: var(--fn-blue-primary); font-weight: 800; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: block; }
+.match-teams { display: grid; grid-template-columns: 1fr 20px 1fr; align-items: center; text-align: center; font-weight: 700; font-size: 13px; }
+.match-vs { color: #5da048; font-size: 9px; font-weight: 900; }
+.match-teams span:first-child { text-align: right; }
+.match-teams span:last-child { text-align: left; }
 
 .pos-change { font-size: 10px; }
 .pos-change.up { color: #27ae60; }
